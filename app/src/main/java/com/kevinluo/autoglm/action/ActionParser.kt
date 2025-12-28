@@ -13,7 +13,6 @@ import com.kevinluo.autoglm.util.Logger
  * and system key actions. It validates coordinate ranges and provides detailed
  * error messages for parsing failures.
  *
- * Requirements: 1.1, 2.1, 2.2
  */
 object ActionParser {
 

@@ -20,7 +20,6 @@ import com.kevinluo.autoglm.model.NetworkError
  * }
  * ```
  *
- * Requirements: 4.1, 4.2, 4.3, 4.4, 4.5
  */
 object ErrorHandler {
 
@@ -69,7 +68,6 @@ object ErrorHandler {
      * @param error The network error to handle
      * @return HandledError with appropriate user and technical messages
      *
-     * Requirements: 4.1, 4.2
      */
     fun handleNetworkError(error: NetworkError): HandledError {
         Logger.logNetworkError(error.message ?: "Unknown network error")
@@ -114,7 +112,6 @@ object ErrorHandler {
      * @param exception Optional exception that caused the error
      * @return HandledError with appropriate user and technical messages
      *
-     * Requirements: 4.1, 4.2
      */
     fun handleActionError(
         actionType: String,
@@ -140,7 +137,6 @@ object ErrorHandler {
      * @param exception Optional exception that caused the error
      * @return HandledError with appropriate user and technical messages
      *
-     * Requirements: 4.1, 4.2
      */
     fun handleScreenshotError(
         error: String,
@@ -175,7 +171,6 @@ object ErrorHandler {
      * @param exception Optional exception that caused the error
      * @return HandledError with appropriate user and technical messages
      *
-     * Requirements: 4.1, 4.2
      */
     fun handlePermissionError(
         permission: String,
@@ -199,7 +194,6 @@ object ErrorHandler {
      * @param exception Optional exception that caused the error
      * @return HandledError with appropriate user and technical messages
      *
-     * Requirements: 4.1, 4.2
      */
     fun handleShizukuError(
         error: String,
@@ -224,7 +218,6 @@ object ErrorHandler {
      * @param exception Optional exception that caused the error
      * @return HandledError with appropriate user and technical messages
      *
-     * Requirements: 4.1, 4.2
      */
     fun handleParsingError(
         input: String,
@@ -253,7 +246,6 @@ object ErrorHandler {
      * @param error Error message describing the configuration issue
      * @return HandledError with appropriate user and technical messages
      *
-     * Requirements: 4.1, 4.2
      */
     fun handleConfigurationError(
         setting: String,
@@ -276,7 +268,6 @@ object ErrorHandler {
      * @param exception Optional exception that caused the error
      * @return HandledError with appropriate user and technical messages
      *
-     * Requirements: 4.1, 4.2
      */
     fun handleUnknownError(
         error: String,
@@ -299,7 +290,6 @@ object ErrorHandler {
      * @param appName Name of the app that wasn't found
      * @return HandledError with appropriate user and technical messages
      *
-     * Requirements: 4.1, 4.2
      */
     fun handleAppNotFoundError(appName: String): HandledError {
         Logger.w(TAG, "App not found: $appName")
@@ -318,7 +308,6 @@ object ErrorHandler {
      * @param error The handled error to format
      * @return Formatted error message suitable for UI display
      *
-     * Requirements: 4.1
      */
     fun formatErrorForDisplay(error: HandledError): String {
         return buildString {
@@ -335,7 +324,6 @@ object ErrorHandler {
      * @param error The handled error to format
      * @return Formatted error message suitable for log output
      *
-     * Requirements: 4.2
      */
     fun formatErrorForLog(error: HandledError): String {
         return buildString {

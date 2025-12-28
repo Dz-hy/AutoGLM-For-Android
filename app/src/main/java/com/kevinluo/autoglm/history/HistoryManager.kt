@@ -36,7 +36,6 @@ import java.util.Locale
  * historyManager.completeTask(true, "Task completed successfully")
  * ```
  *
- * Requirements: 1.1, 2.1, 2.2
  */
 class HistoryManager private constructor(private val context: Context) {
     
@@ -75,7 +74,6 @@ class HistoryManager private constructor(private val context: Context) {
      * @param taskDescription Human-readable description of the task being executed
      * @return The newly created [TaskHistory] instance
      *
-     * Requirements: 2.1, 2.2
      */
     fun startTask(taskDescription: String): TaskHistory {
         val task = TaskHistory(taskDescription = taskDescription)
@@ -94,7 +92,6 @@ class HistoryManager private constructor(private val context: Context) {
      * @param width Screenshot width in pixels
      * @param height Screenshot height in pixels
      *
-     * Requirements: 2.1, 2.2
      */
     fun setCurrentScreenshot(base64Data: String, width: Int, height: Int) {
         currentScreenshotBase64 = base64Data
@@ -116,7 +113,6 @@ class HistoryManager private constructor(private val context: Context) {
      * @param success Whether the step executed successfully
      * @param message Optional additional message or error details
      *
-     * Requirements: 1.1, 2.1, 2.2
      */
     suspend fun recordStep(
         stepNumber: Int,
@@ -196,7 +192,6 @@ class HistoryManager private constructor(private val context: Context) {
      * @param success Whether the task completed successfully
      * @param message Optional completion message or error description
      *
-     * Requirements: 1.1, 2.1, 2.2
      */
     suspend fun completeTask(success: Boolean, message: String?) = withContext(Dispatchers.IO) {
         val task = currentTask ?: return@withContext
@@ -240,7 +235,6 @@ class HistoryManager private constructor(private val context: Context) {
      * @param taskId Unique identifier of the task to retrieve
      * @return The [TaskHistory] if found, null otherwise
      *
-     * Requirements: 2.1, 2.2
      */
     suspend fun getTask(taskId: String): TaskHistory? = withContext(Dispatchers.IO) {
         loadTask(taskId)
@@ -253,7 +247,6 @@ class HistoryManager private constructor(private val context: Context) {
      *
      * @param taskId Unique identifier of the task to delete
      *
-     * Requirements: 2.1, 2.2
      */
     suspend fun deleteTask(taskId: String) = withContext(Dispatchers.IO) {
         deleteTaskFiles(taskId)
@@ -268,7 +261,6 @@ class HistoryManager private constructor(private val context: Context) {
      *
      * @param taskIds Set of unique identifiers of tasks to delete
      *
-     * Requirements: 2.1, 2.2
      */
     suspend fun deleteTasks(taskIds: Set<String>) = withContext(Dispatchers.IO) {
         taskIds.forEach { taskId ->
@@ -283,7 +275,6 @@ class HistoryManager private constructor(private val context: Context) {
      *
      * Removes all task histories and their associated files from storage.
      *
-     * Requirements: 2.1, 2.2
      */
     suspend fun clearAllHistory() = withContext(Dispatchers.IO) {
         historyDir.listFiles()?.forEach { it.deleteRecursively() }
@@ -299,7 +290,6 @@ class HistoryManager private constructor(private val context: Context) {
      * @param path Absolute file path to the screenshot, or null
      * @return Decoded [Bitmap] if the file exists and is valid, null otherwise
      *
-     * Requirements: 2.1, 2.2
      */
     fun getScreenshotBitmap(path: String?): Bitmap? {
         if (path == null) return null

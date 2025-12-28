@@ -19,7 +19,6 @@ import com.kevinluo.autoglm.util.Logger
  * val packageName = resolver.resolvePackageName("WeChat")
  * ```
  *
- * Requirements: 9.1-9.4
  *
  * @property packageManager The Android PackageManager for querying installed apps
  */
@@ -37,7 +36,6 @@ class AppResolver(private val packageManager: PackageManager) {
      *                Can also be a full package name.
      * @return The package name of the best matching app, or null if no match found
      *
-     * Requirements: 9.1, 9.2, 9.3
      */
     fun resolvePackageName(appName: String): String? {
         Logger.i(TAG, "resolvePackageName called with: '$appName'")
@@ -104,7 +102,6 @@ class AppResolver(private val packageManager: PackageManager) {
      * @return List of all launchable apps with their display names and package names,
      *         deduplicated by package name
      *
-     * Requirements: 9.4
      */
     fun getAllLaunchableApps(): List<AppInfo> {
         val intent = Intent(Intent.ACTION_MAIN).apply {

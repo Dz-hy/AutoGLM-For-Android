@@ -48,7 +48,6 @@ import java.util.Locale
  * - Share task as image
  * - Delete task
  *
- * Requirements: 1.1, 2.1, 2.2
  */
 class HistoryDetailActivity : AppCompatActivity() {
     
@@ -145,7 +144,6 @@ class HistoryDetailActivity : AppCompatActivity() {
     /**
      * Copies the task prompt/description to clipboard.
      *
-     * Requirements: 2.1, 2.2
      */
     private fun copyPromptToClipboard() {
         val currentTask = task ?: return
@@ -190,7 +188,6 @@ class HistoryDetailActivity : AppCompatActivity() {
      *
      * Generates a visual representation of the task and saves it to the device's gallery.
      *
-     * Requirements: 1.1, 2.1, 2.2
      */
     private fun saveAsImage() {
         val currentTask = task ?: return
@@ -229,7 +226,6 @@ class HistoryDetailActivity : AppCompatActivity() {
      *
      * Generates a visual representation of the task and opens the system share sheet.
      *
-     * Requirements: 1.1, 2.1, 2.2
      */
     private fun shareAsImage() {
         val currentTask = task ?: return

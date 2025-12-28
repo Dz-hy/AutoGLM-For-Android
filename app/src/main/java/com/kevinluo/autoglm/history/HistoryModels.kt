@@ -19,7 +19,6 @@ import java.util.UUID
  * @property success Whether the step executed successfully
  * @property message Optional additional message or error details
  *
- * Requirements: 2.1, 2.2
  */
 data class HistoryStep(
     val stepNumber: Int,
@@ -47,7 +46,6 @@ data class HistoryStep(
  * @property completionMessage Optional message describing the completion result
  * @property steps List of all recorded steps in execution order
  *
- * Requirements: 2.1, 2.2
  */
 data class TaskHistory(
     val id: String = UUID.randomUUID().toString(),
@@ -73,7 +71,6 @@ data class TaskHistory(
  * Sealed class hierarchy representing different types of visual annotations
  * that can be drawn on screenshots to indicate user actions.
  *
- * Requirements: 2.1, 2.2
  */
 sealed class ActionAnnotation {
     /**

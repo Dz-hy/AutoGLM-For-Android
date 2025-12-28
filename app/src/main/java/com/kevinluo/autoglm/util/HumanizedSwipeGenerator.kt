@@ -44,7 +44,6 @@ data class SwipePath(
  *
  * @param random Random instance for generating variations (default: Random.Default)
  *
- * Requirements: 1.1, 2.1, 2.2
  */
 class HumanizedSwipeGenerator(
     private val random: Random = Random.Default
@@ -65,7 +64,6 @@ class HumanizedSwipeGenerator(
      * @param screenHeight Screen height for boundary clamping
      * @return SwipePath containing the list of points and calculated duration
      *
-     * Requirements: 2.2
      */
     fun generatePath(
         startX: Int,
@@ -101,7 +99,6 @@ class HumanizedSwipeGenerator(
      * @param screenHeight Screen height for boundary clamping
      * @return SwipePath containing the list of points and calculated duration
      *
-     * Requirements: 2.2
      */
     fun generateLinearPath(
         startX: Int,

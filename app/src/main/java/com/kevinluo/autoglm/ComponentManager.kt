@@ -17,6 +17,7 @@ import com.kevinluo.autoglm.screenshot.ScreenshotService
 import com.kevinluo.autoglm.settings.SettingsManager
 import com.kevinluo.autoglm.ui.FloatingWindowService
 import com.kevinluo.autoglm.util.HumanizedSwipeGenerator
+import com.kevinluo.autoglm.util.Logger
 
 /**
  * Centralized component manager for dependency injection and lifecycle management.
@@ -27,7 +28,6 @@ import com.kevinluo.autoglm.util.HumanizedSwipeGenerator
  * - Lifecycle-aware component management
  * - Clean separation of concerns
  * 
- * Requirements: All (integration)
  */
 class ComponentManager private constructor(private val context: Context) {
     
@@ -165,7 +165,7 @@ class ComponentManager private constructor(private val context: Context) {
      * @param service The connected UserService
      */
     fun onServiceConnected(service: IUserService) {
-        android.util.Log.i(TAG, "UserService connected, initializing components")
+        Logger.i(TAG, "UserService connected, initializing components")
         userService = service
         initializeServiceDependentComponents()
     }
@@ -175,7 +175,7 @@ class ComponentManager private constructor(private val context: Context) {
      * Cleans up service-dependent components.
      */
     fun onServiceDisconnected() {
-        android.util.Log.i(TAG, "UserService disconnected, cleaning up components")
+        Logger.i(TAG, "UserService disconnected, cleaning up components")
         userService = null
         cleanupServiceDependentComponents()
     }
@@ -215,7 +215,7 @@ class ComponentManager private constructor(private val context: Context) {
             historyManager = historyManager
         )
         
-        android.util.Log.i(TAG, "All service-dependent components initialized")
+        Logger.i(TAG, "All service-dependent components initialized")
     }
     
     /**
@@ -229,7 +229,7 @@ class ComponentManager private constructor(private val context: Context) {
         _textInputManager = null
         _deviceExecutor = null
         
-        android.util.Log.i(TAG, "Service-dependent components cleaned up")
+        Logger.i(TAG, "Service-dependent components cleaned up")
     }
     
     /**
@@ -238,7 +238,7 @@ class ComponentManager private constructor(private val context: Context) {
      */
     fun reinitializeAgent() {
         if (userService == null) {
-            android.util.Log.w(TAG, "Cannot reinitialize agent: UserService not connected")
+            Logger.w(TAG, "Cannot reinitialize agent: UserService not connected")
             return
         }
         
@@ -258,7 +258,7 @@ class ComponentManager private constructor(private val context: Context) {
             historyManager = historyManager
         )
         
-        android.util.Log.i(TAG, "PhoneAgent reinitialized with new configuration")
+        Logger.i(TAG, "PhoneAgent reinitialized with new configuration")
     }
     
     /**
@@ -295,7 +295,7 @@ class ComponentManager private constructor(private val context: Context) {
      * Should be called when the application is being destroyed.
      */
     fun cleanup() {
-        android.util.Log.i(TAG, "Cleaning up all components")
+        Logger.i(TAG, "Cleaning up all components")
         cleanupServiceDependentComponents()
         _modelClient = null
         _appResolver = null

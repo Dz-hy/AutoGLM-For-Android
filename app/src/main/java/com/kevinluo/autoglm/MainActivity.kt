@@ -50,7 +50,6 @@ import rikka.shizuku.Shizuku
  * The activity implements [PhoneAgentListener] to receive callbacks
  * during task execution for UI updates.
  *
- * Requirements: 1.1, 2.1, 2.2
  */
 class MainActivity : AppCompatActivity(), PhoneAgentListener {
 
@@ -390,7 +389,7 @@ class MainActivity : AppCompatActivity(), PhoneAgentListener {
             openShizukuApp()
         }
 
-        // Settings button - Requirements: 6.1
+        // Settings button
         settingsBtn.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
@@ -416,12 +415,12 @@ class MainActivity : AppCompatActivity(), PhoneAgentListener {
             com.kevinluo.autoglm.input.KeyboardHelper.openInputMethodSettings(this)
         }
 
-        // Start task button - Requirements: 1.1
+        // Start task button
         startTaskBtn.setOnClickListener {
             startTask()
         }
 
-        // Cancel task button - Requirements: 1.4
+        // Cancel task button
         cancelTaskBtn.setOnClickListener {
             cancelTask()
         }
@@ -604,7 +603,6 @@ class MainActivity : AppCompatActivity(), PhoneAgentListener {
      * Called after UserService is connected. Sets up the agent listener
      * and confirmation callback for sensitive operations.
      *
-     * Requirements: 1.1, 2.1, 2.2
      */
     private fun initializePhoneAgent() {
         if (!componentManager.isServiceConnected) {
@@ -667,7 +665,6 @@ class MainActivity : AppCompatActivity(), PhoneAgentListener {
      * Validates the task description, checks agent state, starts the
      * floating window service, and launches the task in a coroutine.
      *
-     * Requirements: 1.1, 2.1, 2.2
      */
     private fun startTask() {
         val taskDescription = taskInput.text?.toString()?.trim() ?: ""
@@ -779,7 +776,6 @@ class MainActivity : AppCompatActivity(), PhoneAgentListener {
      * Cancels the agent, resets its state, and updates the UI
      * to reflect the cancelled status.
      *
-     * Requirements: 1.1, 2.1, 2.2
      */
     private fun cancelTask() {
         Logger.i(TAG, "Cancelling task")
@@ -865,7 +861,6 @@ class MainActivity : AppCompatActivity(), PhoneAgentListener {
      *
      * @param status The new task status to display
      *
-     * Requirements: 1.1, 2.1, 2.2
      */
     private fun updateTaskStatus(status: TaskStatus) {
         val (text, colorRes) = when (status) {
@@ -898,7 +893,6 @@ class MainActivity : AppCompatActivity(), PhoneAgentListener {
      *
      * @param stepNumber The current step number
      *
-     * Requirements: 1.1, 2.1, 2.2
      */
     override fun onStepStarted(stepNumber: Int) {
         runOnUiThread {
@@ -916,7 +910,6 @@ class MainActivity : AppCompatActivity(), PhoneAgentListener {
      *
      * @param thinking The model's thinking text
      *
-     * Requirements: 1.1, 2.1, 2.2
      */
     override fun onThinkingUpdate(thinking: String) {
         runOnUiThread {
@@ -931,7 +924,6 @@ class MainActivity : AppCompatActivity(), PhoneAgentListener {
      *
      * @param action The action that was executed
      *
-     * Requirements: 1.1, 2.1, 2.2
      */
     override fun onActionExecuted(action: AgentAction) {
         runOnUiThread {
@@ -948,7 +940,6 @@ class MainActivity : AppCompatActivity(), PhoneAgentListener {
      *
      * @param message The completion message
      *
-     * Requirements: 1.1, 2.1, 2.2
      */
     override fun onTaskCompleted(message: String) {
         runOnUiThread {
@@ -967,7 +958,6 @@ class MainActivity : AppCompatActivity(), PhoneAgentListener {
      *
      * @param error The error message
      *
-     * Requirements: 1.1, 2.1, 2.2
      */
     override fun onTaskFailed(error: String) {
         runOnUiThread {
@@ -983,7 +973,6 @@ class MainActivity : AppCompatActivity(), PhoneAgentListener {
      *
      * Note: Floating window hide is handled by ScreenshotService.
      *
-     * Requirements: 1.1, 2.1, 2.2
      */
     override fun onScreenshotStarted() {
         // Floating window hide is handled by ScreenshotService
@@ -994,7 +983,6 @@ class MainActivity : AppCompatActivity(), PhoneAgentListener {
      *
      * Note: Floating window show is handled by ScreenshotService.
      *
-     * Requirements: 1.1, 2.1, 2.2
      */
     override fun onScreenshotCompleted() {
         // Floating window show is handled by ScreenshotService

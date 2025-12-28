@@ -19,7 +19,6 @@ package com.kevinluo.autoglm.config
  * val formatted = I18n.getFormattedMessage("step", "cn", 1)
  * ```
  *
- * Requirements: 2.1, 2.2, 5.3
  */
 object I18n {
 

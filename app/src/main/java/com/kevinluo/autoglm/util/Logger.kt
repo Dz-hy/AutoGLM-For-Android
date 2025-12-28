@@ -22,7 +22,6 @@ import android.util.Log
  * }
  * ```
  *
- * Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 1.10
  */
 object Logger {
 
@@ -65,7 +64,6 @@ object Logger {
      * @param tag Component tag identifying the source of the log message
      * @param message Log message to be recorded
      *
-     * Requirements: 1.3
      */
     fun v(tag: String, message: String) {
         if (minLevel <= Level.VERBOSE) {
@@ -80,7 +78,6 @@ object Logger {
      * @param tag Component tag identifying the source of the log message
      * @param message Log message to be recorded
      *
-     * Requirements: 1.3
      */
     fun d(tag: String, message: String) {
         if (minLevel <= Level.DEBUG) {
@@ -95,7 +92,6 @@ object Logger {
      * @param tag Component tag identifying the source of the log message
      * @param message Log message to be recorded
      *
-     * Requirements: 1.4
      */
     fun i(tag: String, message: String) {
         if (minLevel <= Level.INFO) {
@@ -110,7 +106,6 @@ object Logger {
      * @param tag Component tag identifying the source of the log message
      * @param message Log message to be recorded
      *
-     * Requirements: 1.5
      */
     fun w(tag: String, message: String) {
         if (minLevel <= Level.WARN) {
@@ -126,7 +121,6 @@ object Logger {
      * @param message Log message to be recorded
      * @param throwable Exception to log along with the message
      *
-     * Requirements: 1.5
      */
     fun w(tag: String, message: String, throwable: Throwable) {
         if (minLevel <= Level.WARN) {
@@ -141,7 +135,6 @@ object Logger {
      * @param tag Component tag identifying the source of the log message
      * @param message Log message to be recorded
      *
-     * Requirements: 1.6
      */
     fun e(tag: String, message: String) {
         if (minLevel <= Level.ERROR) {
@@ -157,7 +150,6 @@ object Logger {
      * @param message Log message to be recorded
      * @param throwable Exception to log along with the message
      *
-     * Requirements: 1.6
      */
     fun e(tag: String, message: String, throwable: Throwable) {
         if (minLevel <= Level.ERROR) {
@@ -181,7 +173,6 @@ object Logger {
      * @param actionType Type of action being executed (e.g., "tap", "swipe", "type")
      * @param details Additional details about the action parameters
      *
-     * Requirements: 1.7
      */
     fun logAction(actionType: String, details: String) {
         i(TAG_ACTION, "$actionType: $details")
@@ -193,7 +184,6 @@ object Logger {
      * @param method HTTP method (e.g., "GET", "POST")
      * @param url Request URL
      *
-     * Requirements: 1.8
      */
     fun logNetworkRequest(method: String, url: String) {
         d(TAG_NETWORK, "Request: $method $url")
@@ -205,7 +195,6 @@ object Logger {
      * @param statusCode HTTP status code
      * @param durationMs Request duration in milliseconds
      *
-     * Requirements: 1.8
      */
     fun logNetworkResponse(statusCode: Int, durationMs: Long) {
         d(TAG_NETWORK, "Response: $statusCode (${durationMs}ms)")
@@ -217,7 +206,6 @@ object Logger {
      * @param error Error description
      * @param throwable Optional exception that caused the error
      *
-     * Requirements: 1.8
      */
     fun logNetworkError(error: String, throwable: Throwable? = null) {
         if (throwable != null) {
@@ -233,7 +221,6 @@ object Logger {
      * @param stepNumber Current step number in the task execution
      * @param action Action being performed in this step
      *
-     * Requirements: 1.9
      */
     fun logStep(stepNumber: Int, action: String) {
         i(TAG_AGENT, "Step $stepNumber: $action")
@@ -244,7 +231,6 @@ object Logger {
      *
      * @param taskDescription Description of the task being started (truncated to 100 chars)
      *
-     * Requirements: 1.9
      */
     fun logTaskStart(taskDescription: String) {
         val truncated = if (taskDescription.length > MAX_TASK_DESCRIPTION_LENGTH) {
@@ -262,7 +248,6 @@ object Logger {
      * @param message Result message describing the outcome
      * @param stepCount Number of steps executed during the task
      *
-     * Requirements: 1.9
      */
     fun logTaskComplete(success: Boolean, message: String, stepCount: Int) {
         val status = if (success) "completed" else "failed"
@@ -276,7 +261,6 @@ object Logger {
      * @param height Screenshot height in pixels
      * @param isSensitive Whether the screen was detected as sensitive content
      *
-     * Requirements: 1.10
      */
     fun logScreenshot(width: Int, height: Int, isSensitive: Boolean) {
         d(TAG_SCREENSHOT, "Captured ${width}x${height}, sensitive=$isSensitive")
@@ -287,7 +271,6 @@ object Logger {
      *
      * @param thinking Thinking text from the model (truncated to 200 chars)
      *
-     * Requirements: 1.10
      */
     fun logThinking(thinking: String) {
         val truncated = if (thinking.length > MAX_THINKING_LENGTH) {
@@ -303,7 +286,6 @@ object Logger {
      *
      * @param action Action string from model response
      *
-     * Requirements: 1.10
      */
     fun logModelAction(action: String) {
         d(TAG_MODEL, "Action: $action")

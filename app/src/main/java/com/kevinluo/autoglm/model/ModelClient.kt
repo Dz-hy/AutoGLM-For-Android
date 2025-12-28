@@ -32,7 +32,6 @@ import kotlin.coroutines.resume
  * @property frequencyPenalty Frequency penalty for response generation
  * @property timeoutSeconds Request timeout in seconds
  *
- * Requirements: 7.3, 7.4
  */
 data class ModelConfig(
     val baseUrl: String = "https://open.bigmodel.cn/api/paas/v4",
@@ -57,7 +56,6 @@ data class ModelConfig(
  * @property timeToFirstToken Time in milliseconds until the first token was received
  * @property totalTime Total time in milliseconds for the complete response
  *
- * Requirements: 7.1, 7.4
  */
 data class ModelResponse(
     val thinking: String,
@@ -73,7 +71,6 @@ data class ModelResponse(
  * Provides a type-safe way to represent system, user, and assistant messages
  * in a conversation with the model.
  *
- * Requirements: 4.3, 7.2
  */
 sealed class ChatMessage {
     /**
@@ -108,7 +105,6 @@ sealed class ChatMessage {
  * @property role The role of the message sender ("system", "user", or "assistant")
  * @property content The message content as a JSON element (string or array for multi-modal)
  *
- * Requirements: 7.1, 7.4, 7.5
  */
 @Serializable
 data class MessageDto(
@@ -196,7 +192,6 @@ data class MessageDto(
  * @property text The text content, if type is "text"
  * @property imageUrl The image URL wrapper, if type is "image_url"
  *
- * Requirements: 7.4, 7.5
  */
 @Serializable
 data class ContentPart(
@@ -213,7 +208,6 @@ data class ContentPart(
  *
  * @property url The image URL (can be a data URL with base64 content)
  *
- * Requirements: 7.4, 7.5
  */
 @Serializable
 data class ImageUrl(
@@ -233,7 +227,6 @@ data class ImageUrl(
  * @property frequencyPenalty Frequency penalty (-2.0 to 2.0)
  * @property stream Whether to stream the response
  *
- * Requirements: 7.4, 7.5
  */
 @Serializable
 data class ChatCompletionRequest(
@@ -256,7 +249,6 @@ data class ChatCompletionRequest(
  *
  * @property choices List of completion choices in this chunk
  *
- * Requirements: 7.4, 7.5
  */
 @Serializable
 data class ChatCompletionChunk(
@@ -270,7 +262,6 @@ data class ChatCompletionChunk(
  *
  * @property delta The delta content for this choice
  *
- * Requirements: 7.4, 7.5
  */
 @Serializable
 data class ChunkChoice(
@@ -284,7 +275,6 @@ data class ChunkChoice(
  *
  * @property content The content string added in this delta, or null if none
  *
- * Requirements: 7.4, 7.5
  */
 @Serializable
 data class Delta(
@@ -297,7 +287,6 @@ data class Delta(
  *
  * Provides type-safe error handling for various network failure scenarios.
  *
- * Requirements: 4.3, 7.2
  */
 sealed class NetworkError : Exception() {
     /**
@@ -339,7 +328,6 @@ sealed class NetworkError : Exception() {
  *
  * Provides a type-safe way to represent success or failure of model requests.
  *
- * Requirements: 4.3, 7.2
  */
 sealed class ModelResult {
     /**
@@ -365,7 +353,6 @@ sealed class ModelResult {
  *
  * @property config Configuration for the model client
  *
- * Requirements: 1.8, 2.1, 2.2
  */
 class ModelClient(private val config: ModelConfig) {
 
@@ -818,7 +805,6 @@ class ModelClient(private val config: ModelConfig) {
      *
      * Sealed class representing the various outcomes of a connection test.
      *
-     * Requirements: 4.3, 7.2
      */
     sealed class TestResult {
         /**

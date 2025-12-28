@@ -6,7 +6,6 @@ import com.kevinluo.autoglm.model.ChatMessage
  * Manages the conversation context for the phone agent.
  * Handles message accumulation, image cleanup, and context reset.
  * 
- * Requirements: 8.1-8.4
  */
 class AgentContext(private val systemPrompt: String) {
     

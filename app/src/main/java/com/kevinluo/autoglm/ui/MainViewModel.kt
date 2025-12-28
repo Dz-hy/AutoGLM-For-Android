@@ -28,7 +28,6 @@ import kotlinx.coroutines.withContext
  * @property isTaskRunning Whether a task is currently running
  * @property canStartTask Whether a new task can be started
  *
- * Requirements: 2.1, 7.4
  */
 data class MainUiState(
     val shizukuStatus: ShizukuStatus = ShizukuStatus.NOT_RUNNING,
@@ -44,7 +43,6 @@ data class MainUiState(
 /**
  * Enum representing the Shizuku connection status.
  *
- * Requirements: 2.1
  */
 enum class ShizukuStatus {
     /** Shizuku service is not running. */
@@ -62,7 +60,6 @@ enum class ShizukuStatus {
  *
  * These events are consumed once and not persisted in the UI state.
  *
- * Requirements: 2.1, 7.2
  */
 sealed class MainUiEvent {
     /**
@@ -103,7 +100,6 @@ sealed class MainUiEvent {
  * Manages UI state using StateFlow for reactive updates and implements
  * [PhoneAgentListener] to receive callbacks from the agent during task execution.
  *
- * Requirements: 1.1, 2.1, 2.2
  */
 class MainViewModel(application: Application) : AndroidViewModel(application), PhoneAgentListener {
     
@@ -133,7 +129,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application), P
      *
      * @param status The new Shizuku status
      *
-     * Requirements: 2.2
      */
     fun updateShizukuStatus(status: ShizukuStatus) {
         Logger.d(TAG, "updateShizukuStatus: $status")
@@ -148,7 +143,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application), P
      *
      * @param hasPermission Whether the app has overlay permission
      *
-     * Requirements: 2.2
      */
     fun updateOverlayPermission(hasPermission: Boolean) {
         Logger.d(TAG, "updateOverlayPermission: $hasPermission")
@@ -163,7 +157,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application), P
      *
      * @param hasText Whether the task input field has text
      *
-     * Requirements: 2.2
      */
     fun updateTaskInput(hasText: Boolean) {
         _uiState.value = _uiState.value.copy(
@@ -198,7 +191,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application), P
      *
      * @param taskDescription The description of the task to execute
      *
-     * Requirements: 2.2
      */
     fun startTask(taskDescription: String) {
         val agent = componentManager.phoneAgent ?: return
@@ -272,7 +264,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application), P
     /**
      * Cancels the currently running task.
      *
-     * Requirements: 2.2
      */
     fun cancelTask() {
         Logger.d(TAG, "Cancelling task")
@@ -313,7 +304,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application), P
      *
      * @param stepNumber The step number that is starting
      *
-     * Requirements: 2.2
      */
     override fun onStepStarted(stepNumber: Int) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -328,7 +318,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application), P
      *
      * @param thinking The current thinking text from the model
      *
-     * Requirements: 2.2
      */
     override fun onThinkingUpdate(thinking: String) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -344,7 +333,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application), P
      *
      * @param action The action that was executed
      *
-     * Requirements: 2.2
      */
     override fun onActionExecuted(action: AgentAction) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -359,7 +347,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application), P
      *
      * @param message The completion message
      *
-     * Requirements: 2.2
      */
     override fun onTaskCompleted(message: String) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -378,7 +365,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application), P
      *
      * @param error The error message
      *
-     * Requirements: 2.2
      */
     override fun onTaskFailed(error: String) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -397,7 +383,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application), P
      *
      * Handled by FloatingWindowService.
      *
-     * Requirements: 2.2
      */
     override fun onScreenshotStarted() {
         // Handled by FloatingWindowService
@@ -408,7 +393,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application), P
      *
      * Handled by FloatingWindowService.
      *
-     * Requirements: 2.2
      */
     override fun onScreenshotCompleted() {
         // Handled by FloatingWindowService
@@ -417,7 +401,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application), P
     /**
      * Called when the floating window needs to be refreshed.
      *
-     * Requirements: 2.2
      */
     override fun onFloatingWindowRefreshNeeded() {
         Logger.d(TAG, "Floating window refresh needed")

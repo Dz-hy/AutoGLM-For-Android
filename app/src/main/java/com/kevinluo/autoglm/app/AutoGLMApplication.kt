@@ -20,7 +20,6 @@ import com.kevinluo.autoglm.util.Logger
  * The floating window is automatically hidden when the app is in the foreground
  * and shown when the app goes to the background, providing a seamless user experience.
  *
- * Requirements: 1.1, 2.1, 2.2
  */
 class AutoGLMApplication : Application() {
 

@@ -9,7 +9,6 @@ import android.os.Build
 import android.util.Base64
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.TextView
 import com.kevinluo.autoglm.R
 import com.kevinluo.autoglm.util.Logger
 
@@ -36,7 +35,6 @@ import com.kevinluo.autoglm.util.Logger
  * 2. Switch to AutoGLM Keyboard when text input is needed
  * 3. Send broadcasts to input text programmatically
  *
- * Requirements: 1.1, 2.1, 2.4
  */
 class AutoGLMKeyboardService : InputMethodService() {
 
@@ -72,6 +70,8 @@ class AutoGLMKeyboardService : InputMethodService() {
     override fun onCreate() {
         super.onCreate()
         Logger.i(TAG, "AutoGLMKeyboardService created")
+        // Register receiver immediately when service is created
+        registerInputReceiver()
     }
 
     override fun onDestroy() {
@@ -305,10 +305,5 @@ class AutoGLMKeyboardService : InputMethodService() {
          * Extra key for the text message in broadcasts.
          */
         const val EXTRA_MSG = "msg"
-
-        /**
-         * The IME identifier for AutoGLM Keyboard.
-         */
-        const val IME_ID = "com.kevinluo.autoglm/.input.AutoGLMKeyboardService"
     }
 }

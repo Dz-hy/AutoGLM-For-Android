@@ -37,7 +37,6 @@ import java.util.Locale
  * - Batch delete selected tasks
  * - Clear all history
  *
- * Requirements: 1.1, 2.1, 2.2
  */
 class HistoryActivity : AppCompatActivity() {
     
@@ -245,7 +244,6 @@ class HistoryActivity : AppCompatActivity() {
  * @param onItemLongClick Callback invoked when an item is long-pressed
  * @param onSelectionChanged Callback invoked when selection count changes
  *
- * Requirements: 2.1, 2.2
  */
 class HistoryAdapter(
     private val onItemClick: (TaskHistory) -> Unit,

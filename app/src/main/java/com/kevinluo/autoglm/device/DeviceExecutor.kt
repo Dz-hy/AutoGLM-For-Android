@@ -25,7 +25,6 @@ import kotlinx.coroutines.withContext
  *
  * @property userService The Shizuku UserService for executing shell commands
  *
- * Requirements: 5.1-5.21
  */
 class DeviceExecutor(private val userService: IUserService) {
     
@@ -39,7 +38,6 @@ class DeviceExecutor(private val userService: IUserService) {
      * @param y Absolute Y coordinate in pixels
      * @return Result of the command execution
      *
-     * Requirements: 5.1
      */
     suspend fun tap(x: Int, y: Int): String = withContext(Dispatchers.IO) {
         executeCommand("input tap $x $y")
@@ -55,7 +53,6 @@ class DeviceExecutor(private val userService: IUserService) {
      * @param y Absolute Y coordinate in pixels
      * @return Result of the command execution
      *
-     * Requirements: 5.15 - Double tap timing < 300ms
      */
     suspend fun doubleTap(x: Int, y: Int): String = withContext(Dispatchers.IO) {
         val result1 = executeCommand("input tap $x $y")
@@ -76,7 +73,6 @@ class DeviceExecutor(private val userService: IUserService) {
      * @param durationMs Duration of the long press in milliseconds, defaults to [DEFAULT_LONG_PRESS_DURATION_MS]
      * @return Result of the command execution
      *
-     * Requirements: 5.14 - Long press with configurable duration
      */
     suspend fun longPress(x: Int, y: Int, durationMs: Int = DEFAULT_LONG_PRESS_DURATION_MS): String =
         withContext(Dispatchers.IO) {
@@ -93,7 +89,6 @@ class DeviceExecutor(private val userService: IUserService) {
      * @param durationMs Total duration of the swipe in milliseconds
      * @return Result of the command execution
      *
-     * Requirements: 5.3, 5.4 - Swipe with humanized or linear mode
      */
     suspend fun swipe(points: List<Point>, durationMs: Int): String = withContext(Dispatchers.IO) {
         if (points.size < 2) {
@@ -226,7 +221,6 @@ class DeviceExecutor(private val userService: IUserService) {
      * @param keyCode The Android KeyEvent keycode (e.g., [KEYCODE_BACK], [KEYCODE_HOME])
      * @return Result of the command execution
      *
-     * Requirements: 5.9-5.13 - Key press actions
      */
     suspend fun pressKey(keyCode: Int): String = withContext(Dispatchers.IO) {
         executeCommand("input keyevent $keyCode")
@@ -241,7 +235,6 @@ class DeviceExecutor(private val userService: IUserService) {
      * @param packageName The package name of the app to launch
      * @return Result of the command execution
      *
-     * Requirements: 5.7, 5.8 - Launch action
      */
     suspend fun launchApp(packageName: String): String = withContext(Dispatchers.IO) {
         // First, try to resolve the launcher activity
@@ -277,7 +270,6 @@ class DeviceExecutor(private val userService: IUserService) {
      *
      * @return The package name of the current foreground app, or empty string if not found
      *
-     * Requirements: Used for screen info sent to model
      */
     suspend fun getCurrentApp(): String = withContext(Dispatchers.IO) {
         val result = executeCommand("dumpsys window | grep -E 'mCurrentFocus|mFocusedApp'")

@@ -55,5 +55,8 @@ keystore_base64.txt
 # Logcat dumps
 logcat*
 
+# AutoGLM logs
+autoglm_logs_*/
+
 # Dev profiles config
 dev_profiles.json

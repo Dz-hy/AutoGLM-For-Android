@@ -25,7 +25,6 @@ import java.io.ByteArrayOutputStream
  * @property originalHeight Original screen height in pixels (before scaling)
  * @property isSensitive Flag indicating if the screen was sensitive (e.g., password input)
  *
- * Requirements: 2.1
  */
 data class Screenshot(
     val base64Data: String,
@@ -42,7 +41,6 @@ data class Screenshot(
  * The floating window must be hidden before capture to avoid appearing in screenshots.
  * Implementations should handle the visibility state transitions safely.
  *
- * Requirements: 2.1
  */
 interface FloatingWindowController {
     /**
@@ -78,7 +76,6 @@ interface FloatingWindowController {
  * @param userService Shizuku user service for executing shell commands
  * @param floatingWindowControllerProvider Provider function for the floating window controller
  *
- * Requirements: 1.1, 2.1, 2.2
  */
 class ScreenshotService(
     private val userService: IUserService,
@@ -113,7 +110,6 @@ class ScreenshotService(
      *
      * @return Screenshot object containing the captured image data and metadata
      *
-     * Requirements: 1.1, 2.1
      */
     suspend fun capture(): Screenshot = withContext(Dispatchers.IO) {
         val floatingWindowController = floatingWindowControllerProvider()
@@ -158,7 +154,6 @@ class ScreenshotService(
      *
      * @return Screenshot object with captured image data, or fallback screenshot on failure
      *
-     * Requirements: 1.1, 2.1
      */
     private suspend fun captureScreen(): Screenshot = withContext(Dispatchers.IO) {
         try {
@@ -230,7 +225,6 @@ class ScreenshotService(
      * @param originalHeight Original image height in pixels
      * @return Pair of (scaledWidth, scaledHeight) maintaining aspect ratio
      *
-     * Requirements: 2.1
      */
     private fun calculateOptimalDimensions(originalWidth: Int, originalHeight: Int): Pair<Int, Int> {
         // If already within limits, no scaling needed
@@ -261,7 +255,6 @@ class ScreenshotService(
      *
      * @return Raw PNG bytes of the screenshot, or null if capture failed
      *
-     * Requirements: 1.1, 2.1
      */
     private suspend fun executeScreencapToBytes(): ByteArray? = coroutineScope {
         val timestamp = System.currentTimeMillis()
@@ -372,7 +365,6 @@ class ScreenshotService(
      *
      * @return Screenshot object with a black image and isSensitive=true
      *
-     * Requirements: 2.1
      */
     private fun createFallbackScreenshot(): Screenshot {
         val bitmap = Bitmap.createBitmap(FALLBACK_WIDTH, FALLBACK_HEIGHT, Bitmap.Config.ARGB_8888)
@@ -397,7 +389,6 @@ class ScreenshotService(
      * @param data Byte array to encode
      * @return Base64-encoded string without line wrapping
      *
-     * Requirements: 2.1
      */
     fun encodeToBase64(data: ByteArray): String {
         return Base64.encodeToString(data, Base64.NO_WRAP)
@@ -409,7 +400,6 @@ class ScreenshotService(
      * @param base64Data Base64-encoded string to decode
      * @return Decoded byte array
      *
-     * Requirements: 2.1
      */
     fun decodeFromBase64(base64Data: String): ByteArray {
         return Base64.decode(base64Data, Base64.DEFAULT)
@@ -421,7 +411,6 @@ class ScreenshotService(
      * @param base64Data Base64-encoded image data
      * @return Decoded Bitmap, or null if decoding fails
      *
-     * Requirements: 2.1
      */
     fun decodeScreenshotToBitmap(base64Data: String): Bitmap? {
         return try {
@@ -440,7 +429,6 @@ class ScreenshotService(
      * @param quality Compression quality 0-100 (default: WEBP_QUALITY)
      * @return Base64-encoded string of the compressed image
      *
-     * Requirements: 2.1
      */
     fun encodeBitmapToBase64(
         bitmap: Bitmap,
@@ -459,7 +447,6 @@ class ScreenshotService(
      * @param isSensitive Whether the content is sensitive (default: false)
      * @return Screenshot object with encoded image data and dimensions
      *
-     * Requirements: 2.1
      */
     fun createScreenshotFromBitmap(bitmap: Bitmap, isSensitive: Boolean = false): Screenshot {
         return Screenshot(

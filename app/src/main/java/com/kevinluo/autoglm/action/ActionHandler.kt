@@ -24,7 +24,6 @@ import kotlinx.coroutines.delay
  * @param textInputManager Manager for text input operations
  * @param floatingWindowProvider Optional provider for floating window controller
  *
- * Requirements: 1.1, 1.7, 2.1, 2.2
  */
 class ActionHandler(
     private val deviceExecutor: DeviceExecutor,
@@ -109,7 +108,6 @@ class ActionHandler(
      * @param screenHeight Current screen height in pixels
      * @return The result of the action execution
      *
-     * Requirements: 1.7
      */
     suspend fun execute(
         action: AgentAction,
@@ -160,7 +158,6 @@ class ActionHandler(
      * Executes a Tap action.
      * Hides floating window before tap to prevent touch interception.
      * Uses try-finally to ensure floating window is restored even if tap fails.
-     * Requirements: 5.1, 5.2
      */
     private suspend fun executeTap(
         action: AgentAction.Tap,
@@ -200,7 +197,6 @@ class ActionHandler(
      * Executes a Swipe action.
      * Hides floating window before swipe to prevent touch interception.
      * Uses try-finally to ensure floating window is restored even if swipe fails.
-     * Requirements: 5.3, 5.4, 10.1-10.5
      */
     private suspend fun executeSwipe(
         action: AgentAction.Swipe,
@@ -255,7 +251,6 @@ class ActionHandler(
      * 3. The BroadcastReceiver is registered
      * 
      * Uses try-finally to ensure floating window is restored even if typing fails.
-     * Requirements: 5.5
      */
     private suspend fun executeType(action: AgentAction.Type): ActionResult {
         // Hide floating window to ensure target app has focus
@@ -276,7 +271,6 @@ class ActionHandler(
     /**
      * Executes a TypeName action (same as Type).
      * Uses try-finally to ensure floating window is restored even if typing fails.
-     * Requirements: 5.6
      */
     private suspend fun executeTypeName(action: AgentAction.TypeName): ActionResult {
         // Hide floating window to ensure target app has focus
@@ -300,7 +294,6 @@ class ActionHandler(
      * If not found, returns success with a message instructing the model
      * to find the app icon on screen (home screen or app drawer).
      * 
-     * Requirements: 5.7, 5.8
      */
     private suspend fun executeLaunch(action: AgentAction.Launch): ActionResult {
         Logger.d(TAG, "Launching app: ${action.app}")
@@ -381,7 +374,6 @@ class ActionHandler(
      * Executes a Back action.
      * First dismisses the soft keyboard (if shown) to ensure the back action
      * actually navigates back instead of just closing the keyboard.
-     * Requirements: 5.9
      */
     private suspend fun executeBack(): ActionResult {
         // First, dismiss keyboard with ESCAPE key to ensure Back actually navigates
@@ -401,7 +393,6 @@ class ActionHandler(
     
     /**
      * Executes a Home action.
-     * Requirements: 5.10
      */
     private suspend fun executeHome(): ActionResult {
         val result = deviceExecutor.pressKey(DeviceExecutor.KEYCODE_HOME)
@@ -415,7 +406,6 @@ class ActionHandler(
     
     /**
      * Executes a VolumeUp action.
-     * Requirements: 5.11
      */
     private suspend fun executeVolumeUp(): ActionResult {
         val result = deviceExecutor.pressKey(DeviceExecutor.KEYCODE_VOLUME_UP)
@@ -429,7 +419,6 @@ class ActionHandler(
     
     /**
      * Executes a VolumeDown action.
-     * Requirements: 5.12
      */
     private suspend fun executeVolumeDown(): ActionResult {
         val result = deviceExecutor.pressKey(DeviceExecutor.KEYCODE_VOLUME_DOWN)
@@ -443,7 +432,6 @@ class ActionHandler(
     
     /**
      * Executes a Power action.
-     * Requirements: 5.13
      */
     private suspend fun executePower(): ActionResult {
         val result = deviceExecutor.pressKey(DeviceExecutor.KEYCODE_POWER)
@@ -460,7 +448,6 @@ class ActionHandler(
      * Executes a LongPress action.
      * Hides floating window before long press to prevent touch interception.
      * Uses try-finally to ensure floating window is restored even if long press fails.
-     * Requirements: 5.14
      */
     private suspend fun executeLongPress(
         action: AgentAction.LongPress,
@@ -497,7 +484,6 @@ class ActionHandler(
      * Executes a DoubleTap action.
      * Hides floating window before double tap to prevent touch interception.
      * Uses try-finally to ensure floating window is restored even if double tap fails.
-     * Requirements: 5.15
      */
     private suspend fun executeDoubleTap(
         action: AgentAction.DoubleTap,
@@ -527,7 +513,6 @@ class ActionHandler(
     
     /**
      * Executes a Wait action.
-     * Requirements: 5.16
      */
     private suspend fun executeWait(action: AgentAction.Wait): ActionResult {
         val durationMs = (action.durationSeconds * 1000).toLong()
@@ -537,7 +522,6 @@ class ActionHandler(
     
     /**
      * Executes a TakeOver action.
-     * Requirements: 5.17
      */
     private suspend fun executeTakeOver(action: AgentAction.TakeOver): ActionResult {
         confirmationCallback?.onTakeOverRequested(action.message)
@@ -546,7 +530,6 @@ class ActionHandler(
     
     /**
      * Executes an Interact action.
-     * Requirements: 5.18
      */
     private suspend fun executeInteract(action: AgentAction.Interact): ActionResult {
         val selectedIndex = confirmationCallback?.onInteractionRequired(action.options) ?: -1
@@ -560,7 +543,6 @@ class ActionHandler(
     
     /**
      * Executes a Note action.
-     * Requirements: 5.19
      */
     private suspend fun executeNote(action: AgentAction.Note): ActionResult {
         // Note action just records the message, no device operation needed
@@ -569,7 +551,6 @@ class ActionHandler(
     
     /**
      * Executes a CallApi action.
-     * Requirements: 5.20
      */
     private suspend fun executeCallApi(action: AgentAction.CallApi): ActionResult {
         // CallApi action is handled by the agent layer, not device operations
@@ -578,7 +559,6 @@ class ActionHandler(
     
     /**
      * Executes a Finish action.
-     * Requirements: 5.21
      */
     private suspend fun executeFinish(action: AgentAction.Finish): ActionResult {
         return ActionResult(true, true, action.message)

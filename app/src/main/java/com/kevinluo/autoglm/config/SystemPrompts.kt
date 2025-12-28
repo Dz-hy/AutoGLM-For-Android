@@ -19,7 +19,6 @@ import java.util.Locale
  * - Automatic date placeholder replacement
  * - Template access for settings editing
  *
- * Requirements: 2.1, 2.2
  */
 object SystemPrompts {
 

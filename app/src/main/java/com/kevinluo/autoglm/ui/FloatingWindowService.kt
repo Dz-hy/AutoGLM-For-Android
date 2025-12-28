@@ -46,7 +46,6 @@ import java.util.concurrent.atomic.AtomicBoolean
  *
  * Used to track and display the execution state of agent tasks.
  *
- * Requirements: 2.1
  */
 enum class TaskStatus {
     /** No task is currently running. */
@@ -72,7 +71,6 @@ enum class TaskStatus {
  * @property thinking The model's reasoning/thinking text for this step
  * @property action The action being performed in this step
  *
- * Requirements: 2.1, 7.4
  */
 data class FloatingStep(
     val stepNumber: Int,
@@ -93,7 +91,6 @@ data class FloatingStep(
  * It implements [FloatingWindowController] to allow other components to control
  * the window visibility.
  *
- * Requirements: 1.1, 2.1, 2.2
  */
 class FloatingWindowService : Service(), FloatingWindowController {
 
@@ -187,7 +184,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
      *
      * Clears input focus and hides the keyboard before removing the window.
      *
-     * Requirements: 2.2
      */
     override fun hide() {
         serviceScope.launch {
@@ -240,7 +236,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
      *
      * Creates the window view if not already created, then adds it to the window manager.
      *
-     * Requirements: 2.2
      */
     override fun show() {
         serviceScope.launch {
@@ -262,7 +257,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
      *
      * If the window is already attached, removes and re-adds it to ensure it's on top.
      *
-     * Requirements: 2.2
      */
     override fun showAndBringToFront() {
         serviceScope.launch {
@@ -289,7 +283,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
      *
      * @return true if the window is attached and visible, false otherwise
      *
-     * Requirements: 2.2
      */
     override fun isVisible(): Boolean = isAttached.get()
 
@@ -300,7 +293,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
      *
      * @param callback Function to be called with the task description when user starts a task
      *
-     * Requirements: 2.2
      */
     fun setStartTaskCallback(callback: (String) -> Unit) {
         startTaskCallback = callback
@@ -311,7 +303,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
      *
      * @param callback Function to be called to reset the agent state
      *
-     * Requirements: 2.2
      */
     fun setResetAgentCallback(callback: () -> Unit) {
         resetAgentCallback = callback
@@ -324,7 +315,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
      * @param thinking The model's reasoning text for this step
      * @param action The action being performed, or null if no action
      *
-     * Requirements: 2.2
      */
     fun addStep(stepNumber: Int, thinking: String, action: AgentAction?) {
         serviceScope.launch {
@@ -353,7 +343,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
      *
      * @param thinking The new thinking text to display
      *
-     * Requirements: 2.2
      */
     fun updateThinking(thinking: String) {
         serviceScope.launch {
@@ -370,7 +359,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
      *
      * @param action The new action to display
      *
-     * Requirements: 2.2
      */
     fun updateAction(action: AgentAction) {
         serviceScope.launch {
@@ -387,7 +375,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
      *
      * @param status The new task status to display
      *
-     * Requirements: 2.2
      */
     fun updateStatus(status: TaskStatus) {
         Logger.d(TAG, "updateStatus called with status: $status")
@@ -441,7 +428,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
      *
      * @param step The current step number to display
      *
-     * Requirements: 2.2
      */
     fun updateStepNumber(step: Int) {
         currentStepNumber = step
@@ -457,7 +443,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
      * @param message The result message to display
      * @param isSuccess Whether the result represents success or failure
      *
-     * Requirements: 2.2
      */
     fun showResult(message: String, isSuccess: Boolean) {
         serviceScope.launch {
@@ -480,7 +465,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
      *
      * Clears all steps, resets the step counter, and returns to IDLE status.
      *
-     * Requirements: 2.2
      */
     fun reset() {
         serviceScope.launch {
@@ -521,7 +505,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
      *
      * @param callback Function to be called when user clicks the stop button
      *
-     * Requirements: 2.2
      */
     fun setStopTaskCallback(callback: () -> Unit) {
         Logger.d(TAG, "setStopTaskCallback called")
@@ -533,7 +516,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
      *
      * @param callback Function to be called when user clicks the pause button
      *
-     * Requirements: 2.2
      */
     fun setPauseTaskCallback(callback: () -> Unit) {
         Logger.d(TAG, "setPauseTaskCallback called")
@@ -545,7 +527,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
      *
      * @param callback Function to be called when user clicks the resume button
      *
-     * Requirements: 2.2
      */
     fun setResumeTaskCallback(callback: () -> Unit) {
         Logger.d(TAG, "setResumeTaskCallback called")
@@ -555,7 +536,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
     /**
      * Brings the floating window to the front of other windows.
      *
-     * Requirements: 2.2
      */
     fun bringToFront() {
         showAndBringToFront()
@@ -567,7 +547,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
      * @param message The confirmation message to display
      * @param callback Function to be called with the user's response (true for confirm, false for cancel)
      *
-     * Requirements: 2.2
      */
     fun showConfirmation(message: String, callback: (Boolean) -> Unit) {
         serviceScope.launch {
@@ -585,7 +564,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
      * @param message The takeover message to display
      * @param callback Function to be called when user acknowledges the takeover
      *
-     * Requirements: 2.2
      */
     fun showTakeOver(message: String, callback: () -> Unit) {
         serviceScope.launch {
@@ -603,7 +581,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
      * @param options List of option strings to display
      * @param callback Function to be called with the selected option index (-1 if no options)
      *
-     * Requirements: 2.2
      */
     fun showInteract(options: List<String>, callback: (Int) -> Unit) {
         serviceScope.launch {
@@ -1193,7 +1170,6 @@ class FloatingWindowService : Service(), FloatingWindowController {
      *
      * @property steps The list of steps to display
      *
-     * Requirements: 2.1
      */
     private inner class StepsAdapter(
         private val steps: List<FloatingStep>

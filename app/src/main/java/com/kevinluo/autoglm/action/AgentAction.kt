@@ -10,7 +10,6 @@ package com.kevinluo.autoglm.action
  * The sealed class pattern ensures exhaustive handling of all action types
  * and provides type-safe action processing.
  *
- * Requirements: 2.1, 7.2
  */
 sealed class AgentAction {
 

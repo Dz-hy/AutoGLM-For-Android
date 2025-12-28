@@ -81,7 +81,6 @@ enum class AgentState {
  * Core agent class responsible for coordinating the automation flow.
  * Manages task execution, model communication, and action handling.
  * 
- * Requirements: 1.1-1.4
  */
 class PhoneAgent(
     private val modelClient: ModelClient,
@@ -207,7 +206,6 @@ class PhoneAgent(
      * @param task The task description to validate
      * @return true if valid, false if empty or whitespace only
      * 
-     * Requirements: 1.2
      */
     fun isValidTask(task: String): Boolean {
         return task.isNotBlank()
@@ -220,7 +218,6 @@ class PhoneAgent(
      * @param task The natural language task description
      * @return TaskResult containing success status, message, and step count
      * 
-     * Requirements: 1.1, 1.2, 1.3
      */
     suspend fun run(task: String): TaskResult = coroutineScope {
         // Validate task description (Requirement 1.2)
@@ -613,25 +610,75 @@ class PhoneAgent(
                         )
                     }
                     
-                    // Parse and execute action
+                    // Parse and execute action - retry if empty
                     if (response.action.isBlank()) {
-                        Logger.w(TAG, "No action in model response")
-                        // Record step with no action
-                        historyManager?.recordStep(
-                            stepNumber = currentStepNumber,
-                            thinking = response.thinking,
-                            action = null,
-                            actionDescription = "无操作",
-                            success = false,
-                            message = "模型响应中没有操作"
-                        )
-                        return StepResult(
-                            success = false,
-                            finished = false,
-                            action = null,
-                            thinking = response.thinking,
-                            message = "模型响应中没有操作"
-                        )
+                        Logger.w(TAG, "No action in model response, attempting retry...")
+                        
+                        // Remove the assistant response that had no action
+                        ctx.removeLastAssistantMessage()
+                        
+                        // Retry loop - resend the same request
+                        var retryCount = 0
+                        var lastThinking = response.thinking
+                        var finalAction = response.action
+                        
+                        while (finalAction.isBlank() && retryCount < MAX_EMPTY_ACTION_RETRIES) {
+                            retryCount++
+                            Logger.i(TAG, "Empty action retry $retryCount/$MAX_EMPTY_ACTION_RETRIES")
+                            
+                            // Check cancellation/pause before retry
+                            if (cancelled.get() || paused.get()) break
+                            
+                            // Resend the same request (context still has the user message with screenshot)
+                            val retryResult = modelClient.request(ctx.getMessages())
+                            
+                            if (cancelled.get() || paused.get()) break
+                            
+                            when (retryResult) {
+                                is ModelResult.Success -> {
+                                    val retryResponse = retryResult.response
+                                    lastThinking = retryResponse.thinking
+                                    finalAction = retryResponse.action
+                                    Logger.d(TAG, "Retry $retryCount response action: ${finalAction.take(50)}")
+                                    
+                                    // Update listener with new thinking
+                                    listener?.onThinkingUpdate(retryResponse.thinking)
+                                    
+                                    // If got action, add assistant response to context
+                                    if (finalAction.isNotBlank()) {
+                                        ctx.addAssistantMessage(retryResponse.rawContent)
+                                    }
+                                }
+                                is ModelResult.Error -> {
+                                    Logger.w(TAG, "Retry $retryCount failed: ${retryResult.error.message}")
+                                    break
+                                }
+                            }
+                        }
+                        
+                        // If still no action after retries, fail
+                        if (finalAction.isBlank()) {
+                            Logger.w(TAG, "No action after $retryCount retries")
+                            historyManager?.recordStep(
+                                stepNumber = currentStepNumber,
+                                thinking = lastThinking,
+                                action = null,
+                                actionDescription = "无操作",
+                                success = false,
+                                message = "模型响应中没有操作（已重试${retryCount}次）"
+                            )
+                            return StepResult(
+                                success = false,
+                                finished = false,
+                                action = null,
+                                thinking = lastThinking,
+                                message = "模型响应中没有操作（已重试${retryCount}次）"
+                            )
+                        }
+                        
+                        // Got action after retry, continue with execution
+                        Logger.i(TAG, "Got action after $retryCount retries")
+                        return executeAction(finalAction, lastThinking, screenshot.originalWidth, screenshot.originalHeight)
                     }
                     
                     return executeAction(response.action, response.thinking, screenshot.originalWidth, screenshot.originalHeight)
@@ -882,7 +929,6 @@ Please re-analyze the current screenshot and output correct coordinates (within 
      * @param task Optional task description (required for first step)
      * @return StepResult containing step outcome
      * 
-     * Requirements: 1.1
      */
     suspend fun step(task: String? = null): StepResult {
         // For first step, validate task
@@ -964,7 +1010,6 @@ Please re-analyze the current screenshot and output correct coordinates (within 
      * Cancels the currently running task.
      * Uses compareAndSet to ensure state transition only happens when task is RUNNING or PAUSED.
      * 
-     * Requirements: 1.4
      */
     fun cancel() {
         Logger.i(TAG, "Cancel requested, current state: ${state.get()}")
@@ -989,7 +1034,6 @@ Please re-analyze the current screenshot and output correct coordinates (within 
      * Note: Does NOT reset the cancelled flag - that's handled at the start of run()
      * to ensure cancellation is properly detected even after reset.
      * 
-     * Requirements: 8.4
      */
     fun reset() {
         Logger.i(TAG, "Resetting agent, current state: ${state.get()}")
@@ -1051,6 +1095,10 @@ Please re-analyze the current screenshot and output correct coordinates (within 
         /** Pause message in English. */
         const val PAUSE_MESSAGE_EN = "Task paused"
         
+        /** Interval in milliseconds for checking pause state during wait loops. */
         private const val PAUSE_CHECK_INTERVAL_MS = 100L
+        
+        /** Maximum retries when model returns empty action. */
+        private const val MAX_EMPTY_ACTION_RETRIES = 3
     }
 }

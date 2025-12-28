@@ -1,6 +1,7 @@
 package com.kevinluo.autoglm.input
 
 import android.util.Base64
+import com.kevinluo.autoglm.BuildConfig
 import com.kevinluo.autoglm.IUserService
 import com.kevinluo.autoglm.util.Logger
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +32,6 @@ import kotlinx.coroutines.withContext
  *
  * @param userService The Shizuku UserService for executing shell commands
  *
- * Requirements: 1.1, 2.1, 2.2, 2.4
  */
 class TextInputManager(private val userService: IUserService) {
 
@@ -50,7 +50,6 @@ class TextInputManager(private val userService: IUserService) {
      * @param text The text to type (supports all Unicode including Chinese, emoji, etc.)
      * @return [InputResult] indicating success or failure with details
      *
-     * Requirements: 1.1, 2.4
      */
     suspend fun typeText(text: String): InputResult = withContext(Dispatchers.IO) {
         Logger.i(TAG, "typeText: '$text'")
@@ -99,7 +98,6 @@ class TextInputManager(private val userService: IUserService) {
      *
      * @return [InputResult] indicating success or failure of the switch operation
      *
-     * Requirements: 2.4
      */
     private suspend fun switchToInputKeyboard(): InputResult {
         // Get current IME
@@ -116,8 +114,13 @@ class TextInputManager(private val userService: IUserService) {
         originalIme = currentIme
         Logger.d(TAG, "Saved original IME: $originalIme")
 
+        // Build IME ID: packageName (applicationId) + full service class name (based on namespace)
+        // packageName varies between debug/release, but service class name is always based on namespace
+        val imeId = "${BuildConfig.APPLICATION_ID}/com.kevinluo.autoglm.input.AutoGLMKeyboardService"
+        Logger.d(TAG, "AutoGLM Keyboard IME ID: $imeId")
+
         // Enable and switch to AutoGLM Keyboard
-        if (tryEnableKeyboard(AUTOGLM_KEYBOARD_IME)) {
+        if (tryEnableKeyboard(imeId)) {
             Logger.i(TAG, "Switched to AutoGLM Keyboard")
             return InputResult.success("Switched to AutoGLM Keyboard")
         }
@@ -168,7 +171,8 @@ class TextInputManager(private val userService: IUserService) {
      */
     private fun clearText(): String {
         Logger.d(TAG, "Clearing text")
-        return shell("am broadcast -a $ACTION_CLEAR_TEXT")
+        // Use BuildConfig.APPLICATION_ID to support both debug and release builds
+        return shell("am broadcast -a $ACTION_CLEAR_TEXT -p ${BuildConfig.APPLICATION_ID}")
     }
 
     /**
@@ -178,13 +182,17 @@ class TextInputManager(private val userService: IUserService) {
      * active keyboard. This approach supports all Unicode characters including
      * Chinese, emoji, etc.
      *
+     * NOTE: On Android 14+, we must specify the package name for the broadcast
+     * to be received by dynamically registered receivers.
+     *
      * @param text The text to input
      * @return The broadcast result string
      */
     private fun inputTextViaB64(text: String): String {
         val encoded = Base64.encodeToString(text.toByteArray(Charsets.UTF_8), Base64.NO_WRAP)
         Logger.d(TAG, "Input text via B64: '$text' -> '$encoded'")
-        return shell("am broadcast -a $ACTION_INPUT_B64 --es msg '$encoded'")
+        // Use BuildConfig.APPLICATION_ID to support both debug and release builds
+        return shell("am broadcast -a $ACTION_INPUT_B64 -p ${BuildConfig.APPLICATION_ID} --es msg '$encoded'")
     }
 
     /**
@@ -221,9 +229,6 @@ class TextInputManager(private val userService: IUserService) {
     companion object {
         private const val TAG = "TextInputManager"
 
-        // AutoGLM Keyboard identifier (built-in)
-        private const val AUTOGLM_KEYBOARD_IME = "com.kevinluo.autoglm/.input.AutoGLMKeyboardService"
-
         // Broadcast actions
         private const val ACTION_INPUT_B64 = "ADB_INPUT_B64"
         private const val ACTION_CLEAR_TEXT = "ADB_CLEAR_TEXT"
@@ -251,7 +256,6 @@ class TextInputManager(private val userService: IUserService) {
  * @property success Whether the input operation succeeded
  * @property message A descriptive message about the operation result
  *
- * Requirements: 2.1, 7.4
  */
 data class InputResult(
     val success: Boolean,

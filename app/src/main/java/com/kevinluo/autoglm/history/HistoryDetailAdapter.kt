@@ -30,7 +30,6 @@ import java.util.Locale
  * @param historyManager Manager for loading screenshots
  * @param coroutineScope Scope for launching async operations
  *
- * Requirements: 1.1, 2.1, 2.2
  */
 class HistoryDetailAdapter(
     private val historyManager: HistoryManager,

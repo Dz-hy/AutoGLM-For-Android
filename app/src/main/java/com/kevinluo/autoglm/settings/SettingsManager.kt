@@ -20,7 +20,6 @@ import org.json.JSONObject
  * @property displayName User-friendly name shown in the dropdown selector
  * @property config The actual model configuration containing API settings
  *
- * Requirements: 7.4
  */
 data class SavedModelProfile(
     val id: String,
@@ -37,7 +36,6 @@ data class SavedModelProfile(
  * @property name Template name shown in the list
  * @property description Task description to fill in when the template is selected
  *
- * Requirements: 7.4
  */
 data class TaskTemplate(
     val id: String,
@@ -60,7 +58,6 @@ data class TaskTemplate(
  *
  * @param context Android context used for accessing SharedPreferences
  *
- * Requirements: 6.1-6.4
  */
 class SettingsManager(private val context: Context) {
     
@@ -126,7 +123,6 @@ class SettingsManager(private val context: Context) {
      *
      * @return SharedPreferences instance for storing sensitive data
      *
-     * Requirements: 6.2
      */
     private fun createEncryptedPrefs(): SharedPreferences {
         return try {
@@ -159,7 +155,6 @@ class SettingsManager(private val context: Context) {
      *
      * @return The current model configuration
      *
-     * Requirements: 6.3, 6.4
      */
     fun getModelConfig(): ModelConfig {
         Logger.d(TAG, "Loading model configuration")
@@ -186,7 +181,6 @@ class SettingsManager(private val context: Context) {
      *
      * @param config The model configuration to save
      *
-     * Requirements: 6.2
      */
     fun saveModelConfig(config: ModelConfig) {
         Logger.d(TAG, "Saving model configuration: baseUrl=${config.baseUrl}, modelName=${config.modelName}")
@@ -216,7 +210,6 @@ class SettingsManager(private val context: Context) {
      *
      * @return The current agent configuration
      *
-     * Requirements: 6.3
      */
     fun getAgentConfig(): AgentConfig {
         Logger.d(TAG, "Loading agent configuration")
@@ -234,7 +227,6 @@ class SettingsManager(private val context: Context) {
      *
      * @param config The agent configuration to save
      *
-     * Requirements: 6.2
      */
     fun saveAgentConfig(config: AgentConfig) {
         Logger.d(TAG, "Saving agent configuration: maxSteps=${config.maxSteps}, language=${config.language}")

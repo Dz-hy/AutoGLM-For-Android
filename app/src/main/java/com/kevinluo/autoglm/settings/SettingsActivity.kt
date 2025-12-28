@@ -37,7 +37,6 @@ import kotlinx.coroutines.launch
  * Supports saving and loading multiple model profiles.
  * Also provides management of task templates and custom system prompts.
  *
- * Requirements: 6.1-6.4
  */
 class SettingsActivity : AppCompatActivity() {
     
@@ -173,7 +172,6 @@ class SettingsActivity : AppCompatActivity() {
     /**
      * Loads current settings from storage and displays them.
      *
-     * Requirements: 6.3
      */
     private fun loadCurrentSettings() {
         Logger.d(TAG, "Loading current settings")
@@ -512,7 +510,6 @@ class SettingsActivity : AppCompatActivity() {
     /**
      * Validates user input before saving.
      *
-     * Requirements: 6.1
      *
      * @return true if all inputs are valid, false otherwise
      */
@@ -583,7 +580,6 @@ class SettingsActivity : AppCompatActivity() {
     /**
      * Saves the current settings to storage.
      *
-     * Requirements: 6.2
      */
     private fun saveSettings() {
         Logger.i(TAG, "Saving settings")

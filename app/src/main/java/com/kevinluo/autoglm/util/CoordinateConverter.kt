@@ -19,7 +19,6 @@ package com.kevinluo.autoglm.util
  * // absX = 540, absY = 1200 (center of screen)
  * ```
  *
- * Requirements: 1.1, 2.1, 2.2
  */
 object CoordinateConverter {
 
@@ -30,7 +29,6 @@ object CoordinateConverter {
      * @param screenWidth The actual screen width in pixels
      * @return The absolute X coordinate in range [0, screenWidth)
      *
-     * Requirements: 2.2
      */
     fun toAbsoluteX(relativeX: Int, screenWidth: Int): Int {
         return relativeX * screenWidth / RELATIVE_MAX
@@ -43,7 +41,6 @@ object CoordinateConverter {
      * @param screenHeight The actual screen height in pixels
      * @return The absolute Y coordinate in range [0, screenHeight)
      *
-     * Requirements: 2.2
      */
     fun toAbsoluteY(relativeY: Int, screenHeight: Int): Int {
         return relativeY * screenHeight / RELATIVE_MAX
@@ -58,7 +55,6 @@ object CoordinateConverter {
      * @param screenHeight The actual screen height in pixels
      * @return A Pair of (absoluteX, absoluteY) coordinates
      *
-     * Requirements: 2.2
      */
     fun toAbsolute(
         relativeX: Int,
@@ -79,7 +75,6 @@ object CoordinateConverter {
      * @param screenWidth The actual screen width in pixels
      * @return The relative X coordinate in range [0, 999]
      *
-     * Requirements: 2.2
      */
     fun toRelativeX(absoluteX: Int, screenWidth: Int): Int {
         return absoluteX * RELATIVE_MAX / screenWidth
@@ -92,7 +87,6 @@ object CoordinateConverter {
      * @param screenHeight The actual screen height in pixels
      * @return The relative Y coordinate in range [0, 999]
      *
-     * Requirements: 2.2
      */
     fun toRelativeY(absoluteY: Int, screenHeight: Int): Int {
         return absoluteY * RELATIVE_MAX / screenHeight

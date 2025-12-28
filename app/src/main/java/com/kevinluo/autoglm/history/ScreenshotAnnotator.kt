@@ -25,7 +25,6 @@ import kotlin.math.sin
  * All coordinates are expected in relative units (0-1000) and are converted
  * to actual pixel positions based on screen dimensions.
  *
- * Requirements: 2.1, 2.2
  */
 object ScreenshotAnnotator {
     
@@ -51,7 +50,6 @@ object ScreenshotAnnotator {
      * @param density Screen density for dp to px conversion (default 2.5f)
      * @return A new bitmap with the annotation drawn on it
      *
-     * Requirements: 2.1, 2.2
      */
     fun annotate(bitmap: Bitmap, annotation: ActionAnnotation, density: Float = 2.5f): Bitmap {
         val result = bitmap.copy(Bitmap.Config.ARGB_8888, true)
@@ -551,7 +549,6 @@ object ScreenshotAnnotator {
      * @param screenHeight Screen height in pixels
      * @return Appropriate ActionAnnotation for the action type
      *
-     * Requirements: 2.1, 2.2
      */
     fun createAnnotation(
         action: com.kevinluo.autoglm.action.AgentAction,

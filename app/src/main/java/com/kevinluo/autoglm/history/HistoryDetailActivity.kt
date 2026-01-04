@@ -499,7 +499,13 @@ class HistoryDetailActivity : AppCompatActivity() {
         
         val file = File(cacheDir, "autoglm_task_${System.currentTimeMillis()}.webp")
         FileOutputStream(file).use { out ->
-            bitmap.compress(Bitmap.CompressFormat.WEBP_LOSSY, 90, out)
+            @Suppress("DEPRECATION")
+            val format = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                Bitmap.CompressFormat.WEBP_LOSSY
+            } else {
+                Bitmap.CompressFormat.WEBP
+            }
+            bitmap.compress(format, 90, out)
         }
         return file
     }
@@ -550,7 +556,13 @@ class HistoryDetailActivity : AppCompatActivity() {
             
             uri?.let {
                 resolver.openOutputStream(it)?.use { out ->
-                    bitmap.compress(Bitmap.CompressFormat.WEBP_LOSSY, 90, out)
+                    @Suppress("DEPRECATION")
+                    val format = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        Bitmap.CompressFormat.WEBP_LOSSY
+                    } else {
+                        Bitmap.CompressFormat.WEBP
+                    }
+                    bitmap.compress(format, 90, out)
                 }
                 
                 contentValues.clear()
@@ -567,7 +579,8 @@ class HistoryDetailActivity : AppCompatActivity() {
             
             val file = File(autoglmDir, filename)
             FileOutputStream(file).use { out ->
-                bitmap.compress(Bitmap.CompressFormat.WEBP_LOSSY, 90, out)
+                @Suppress("DEPRECATION")
+                bitmap.compress(Bitmap.CompressFormat.WEBP, 90, out)
             }
             
             // Notify gallery

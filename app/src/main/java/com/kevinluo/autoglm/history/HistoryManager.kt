@@ -3,6 +3,7 @@ package com.kevinluo.autoglm.history
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.util.Base64
 import com.kevinluo.autoglm.action.AgentAction
 import com.kevinluo.autoglm.util.Logger
@@ -346,7 +347,13 @@ class HistoryManager private constructor(private val context: Context) {
         val file = File(taskDir, "step_${stepNumber}${suffix}.webp")
         
         FileOutputStream(file).use { out ->
-            bitmap.compress(Bitmap.CompressFormat.WEBP_LOSSY, 85, out)
+            @Suppress("DEPRECATION")
+            val format = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                Bitmap.CompressFormat.WEBP_LOSSY
+            } else {
+                Bitmap.CompressFormat.WEBP
+            }
+            bitmap.compress(format, 85, out)
         }
         
         return file.absolutePath

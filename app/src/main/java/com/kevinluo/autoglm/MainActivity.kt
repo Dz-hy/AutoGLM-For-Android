@@ -1016,7 +1016,7 @@ class MainActivity : AppCompatActivity(), PhoneAgentListener {
 
         runOnUiThread {
             statusText.text = statusMessage
-            shizukuStatusIndicator.background.setTint(getColor(statusColor))
+            shizukuStatusIndicator.background.setTint(ContextCompat.getColor(this, statusColor))
             
             // Show buttons based on Shizuku state
             if (serviceConnected) {

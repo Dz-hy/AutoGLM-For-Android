@@ -2,6 +2,7 @@ package com.kevinluo.autoglm.screenshot
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.util.Base64
 import com.kevinluo.autoglm.IUserService
 import com.kevinluo.autoglm.util.ErrorHandler
@@ -91,6 +92,18 @@ class ScreenshotService(
         
         // Screenshot compression settings - optimized for API upload
         private const val WEBP_QUALITY = 65  // Reduced from 70 for better compression
+        
+        /**
+         * Returns the appropriate WebP compress format based on API level.
+         * WEBP_LOSSY is only available on API 30+, use deprecated WEBP for older versions.
+         */
+        @Suppress("DEPRECATION")
+        val WEBP_FORMAT: Bitmap.CompressFormat
+            get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                Bitmap.CompressFormat.WEBP_LOSSY
+            } else {
+                Bitmap.CompressFormat.WEBP
+            }
         
         // Screenshot scaling settings - use max dimensions instead of fixed scale factor
         // This ensures consistent output size regardless of device resolution
@@ -191,7 +204,7 @@ class ScreenshotService(
             
             // Convert to WebP for better compression
             val webpStream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.WEBP_LOSSY, WEBP_QUALITY, webpStream)
+            bitmap.compress(WEBP_FORMAT, WEBP_QUALITY, webpStream)
             bitmap.recycle()
             
             val webpData = webpStream.toByteArray()
@@ -370,7 +383,7 @@ class ScreenshotService(
         val bitmap = Bitmap.createBitmap(FALLBACK_WIDTH, FALLBACK_HEIGHT, Bitmap.Config.ARGB_8888)
         
         val outputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.WEBP_LOSSY, WEBP_QUALITY, outputStream)
+        bitmap.compress(WEBP_FORMAT, WEBP_QUALITY, outputStream)
         bitmap.recycle()
         
         val base64Data = Base64.encodeToString(outputStream.toByteArray(), Base64.NO_WRAP)
@@ -432,7 +445,7 @@ class ScreenshotService(
      */
     fun encodeBitmapToBase64(
         bitmap: Bitmap,
-        format: Bitmap.CompressFormat = Bitmap.CompressFormat.WEBP_LOSSY,
+        format: Bitmap.CompressFormat = WEBP_FORMAT,
         quality: Int = WEBP_QUALITY
     ): String {
         val outputStream = ByteArrayOutputStream()
